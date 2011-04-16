@@ -23,7 +23,6 @@ dist = setup(
 
     scripts = ['hermes'],
     data_files=[
-        ("/usr/share/hermes",["data/server.crt", "data/server.key"]),
         ("/etc",["data/hermes.xml"])
     ]
 )
