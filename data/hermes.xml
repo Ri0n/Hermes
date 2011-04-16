@@ -1,13 +1,13 @@
 <?xml version="1.0" ?>
 <config>
-    <ssl   cert="/usr/share/hermes/server.crt"
-           private="/usr/share/hermes/server.key" />
+    <ssl   cert="/etc/ssl/hermes/server.crt"
+           private="/etc/ssl/hermes/server.key" />
 
     <demon port="9876"   if="127.0.0.1" ssl="1" />
 
     <logins>
-        <login name="User 1"    user="login1"  password="password1" />
-        <login name="User 2"    user="login2"  password="password2" />
+        <login name="Guest"    user="guest"  password="guest" />
+        <login name="root"    user="root"  password="128" />
     </logins>
     
     <log   destination="syslog" />
