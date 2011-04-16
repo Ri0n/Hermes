@@ -1,0 +1,2 @@
+class Messenger(object):
+    pass

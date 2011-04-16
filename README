@@ -1,0 +1,22 @@
+================ HERMES SERVER ================
+
+1. What is it
+   The great Messenger of the gods
+
+2. Requirements
+   - twisted-web
+   - twisted-words
+
+3. Installation
+   Use distutils or emerge hermes on gentoo
+
+4. Configuration
+   Look data/hermes.xml. this file will be installed as defualt.
+   default location /etc/hermes.xml may be overriden by hermes_CONFIG
+   enronment variable
+
+5. Starting
+   "hermes" or "/etc/init.d/hermes start" on gentoo
+
+6. Daemon listens port from configuration for incoming xml-rpc requests.
+   and resends everything to apropriate contacts via xmpp or some other protocol

@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<config>
+    <ssl   cert="/usr/share/hermes/server.crt"
+           private="/usr/share/hermes/server.key" />
+
+    <demon port="9876"   if="127.0.0.1" ssl="1" />
+
+    <logins>
+        <login name="User 1"    user="login1"  password="password1" />
+        <login name="User 2"    user="login2"  password="password2" />
+    </logins>
+    
+    <log   destination="syslog" />
+    
+    <spool path="/var/lib/hermes"
+           db="contacts.sqlite3" />
+
+    <xmpp  host="jabber.org"
+           port="5222"
+           me="robot@jabber.org/Hermes"
+           password="" />
+
+</config>
