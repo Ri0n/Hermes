@@ -91,7 +91,6 @@ class XmppMessenger(messenger.Messenger):
         self.kaTimer = None
         self.kaResponseTimer = None
         self.lastSendTime = datetime.datetime.today() - datetime.timedelta(days=1)
-        self.spamReceivers = {}
 
         f = client.XMPPClientFactory(self.me, config().xmpp.password)
         f.addBootstrap(xmlstream.STREAM_CONNECTED_EVENT, self.connected)
@@ -188,7 +187,7 @@ class XmppMessenger(messenger.Messenger):
             return #ignore other domains
         text = str(message.body)
         if text.lower() == "help":
-            answer = """Тебя приветствует Великий и Ужасный ГЕРМЕС!!!
+            answer = """The Great HERMES welcomes you!!!
 Хотя можешь называть меня просто "О, великий", я не обижусь.
 Итак, смертный, ты посмел попросить у меня помощи и на твое везение я сегодня
 крайне добр и великодушен, посему спрашивай чего ты хочешь:
@@ -203,31 +202,25 @@ S - подписка
         elif text == "ibash":
             self.sendIBashTo(message["from"])
             return
-        elif text == "wantspam":
-            self.startSendingSpam(message["from"])
-            return
-        elif text == "stopspam":
-            self.stopSendingSpam(message["from"])
-            return
         elif text[:2].strip(" ") == "S": # subscription
             new = text[2:].strip(" \n")
             if new:
                 c = getCore().contacts.subscribe(AT_XMPP, j.userhost(), new)
-                answer = "Великий Гермес запомнил вас как: " + str(c)
+                answer = "The Greate Hermes remembered you: " + str(c)
             else:
                 c = getCore().contacts.getByAddress(AT_XMPP, j.userhost())
-                answer = "Великий Гермес узнал вас как: " + str(c) if c else \
-                    "Великий Гермес долго перебирал древние свитки, но так и не смог найти вашу подписку"
-                answer += """\n\nЧто бы изменить свою подписку, попробуйте написать что-нибудь после буквы S
-через пробел ;-) Учтите, что по-умолчанию нет никакой подписки.
+                answer = "The Great Hermes knows you as: " + str(c) if c else \
+                    "The Great Hermes really tried to find you in ancient scrolls but unsuccessfully"
+                answer += """\n\nTo change your subscribtion try to write something after letter S
+after space ;-) Keep in mind there is no any subscription by default.
 
-Примеры:
-1) S * - подписаться на всё
-2) S @pamm[*],@billing[*] - подписатья на всё только для ПАММа и биллинга
-3) S error,@pamm[warning] - подписаться на тег error, а для ПАММа ещё и на warning
-4) S *,^notice - подписаться на всё кроме тега notice
+Examples:
+1) S * - subscribe to everything
+2) S @serv1[*],@serv2[*] - subscribe to everything for serv1 and serv2
+3) S error,@serv1[warning] - subscribe to tag "error" but for serv1 "warning" as well
+4) S *,^notice - subscrive to everything except "notice" tag
 
-На данный момент доступны следующие сервера:
+Next services are available:
 """
                 for k, v in getCore().servicesDict().iteritems():
                     answer += "%s - %s\n" % (k, v)
@@ -235,8 +228,8 @@ S - подписка
             if datetime.datetime.today() - self.lastSendTime < datetime.timedelta(seconds=5):
                 print "RATE LIMIT exceeded: ", message.toXml()
                 return # don't send too often
-            answer = "Хм, я не знаю что такое \"%s\". " \
-                     "я вообще в принципе тупой.." % text
+            answer = "Hm I don't know what is \"%s\". " \
+                     "I'm just stupid bot.." % text
         self.sendMessage([message["from"]], answer)
 
     def sendIBashTo(self, jid):
@@ -278,41 +271,4 @@ S - подписка
             message["to"] = j
             self.xmlstream.send(message)
         self.lastSendTime = datetime.datetime.today()
-        
-    def startSendingSpam(self, jid):
-        def send10(jid):
-            for i in range(1, 10):
-                self.sendMessage([jid], "this is spam" + """
-def sendMessage(self, addresses, text, html = ""):
-        if not self.xmlstream:
-            print "XML Stream is not ready yet! Can't send: ", text
-            return
-        message = domish.Element((None, 'message'))
-        message["type"] = "chat"
-        message.addElement('body', content=text)
-        if html:
-            try:
-                elements = parseXML(html)
-                he = message.addElement(('http://jabber.org/protocol/xhtml-im', 'html'))
-                body = he.addElement(('http://www.w3.org/1999/xhtml', 'body'))
-                for e in elements:
-                    body.addChild(e)
-            except Exception, e:
-                print "Failed to add xhtml content:", str(e)
-        
-        for j in addresses:
-            log.msg("sending message to " + j)
-            message["to"] = j
-            self.xmlstream.send(message)
-        self.lastSendTime = datetime.datetime.today()
-        """)
-        
-        self.spamReceivers[jid] = scheduler.job(send10, jid).repeated(1)
-        self.spamReceivers[jid].start()
-
-    def stopSendingSpam(self, jid):
-        if jid in self.spamReceivers:
-            self.spamReceivers[jid].cancel()
-            del self.spamReceivers[jid]
-        
 

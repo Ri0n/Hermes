@@ -15,7 +15,7 @@ from rcore import config
 # tagrule > *
 #
 
-# ^*,@billing[*,^notice] - disable all, enable all for billing except notice
+# ^*,@serv1[*,^notice] - disable all, enable all for serv1 except notice
 
 # tokens
 # t - word[a-z]
@@ -192,4 +192,4 @@ class TagParser:
 
 if __name__ == "__main__":
     tp = TagParser()
-    tp.parse("*,@billing[error,^notice],error,@pamm[*],@billing[^warning]")
+    tp.parse("*,@serv1[error,^notice],error,@serv2[*],@serv1[^warning]")
