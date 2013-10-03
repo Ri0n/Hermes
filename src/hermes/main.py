@@ -7,7 +7,7 @@ __date__ ="$11.02.2010 12:40:23$"
 from optparse import OptionParser
 from hermes.hermes_core import HermesCore
 
-def main(configFile = "/etc/hermes.xml"):
+def main(configFile = "/etc/hermes.conf"):
     usage = "usage: %prog [options]"
     parser = OptionParser(usage)
     parser.add_option("-c", "--config", dest="configFile", metavar="FILENAME",

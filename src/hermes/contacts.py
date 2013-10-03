@@ -1,4 +1,4 @@
-from rcore import config, getCore
+from rcore import config, Core
 from twisted.python import log
 
 AT_XMPP = 1
@@ -34,7 +34,7 @@ class Subscription(object):
         return ",".join([str(v) for v in self.services.values()]).strip(",")
     
     def parse(self, data):
-        self.services = getCore().tagParser.servicesFromString(data)
+        self.services = Core.instance().tagParser.servicesFromString(data)
         
     def match(self, sender, tags):
         r = None
@@ -77,7 +77,7 @@ class Contact(object):
         self.save()
         
     def save(self):
-        c = getCore().db.cursor()
+        c = Core.instance().db.cursor()
 #        if self.id:
 #            c.execute("UPDATE OR REPLACE contacts(type, address, privilege, subscription) "\
 #                  "VALUES(?, ?, ?, ?)", (self.type, self.address, self.privilege, self.subscription))
@@ -87,7 +87,7 @@ class Contact(object):
         c.close()
         
     def delete(self):
-        c = getCore().db.cursor()
+        c = Core.instance().db.cursor()
         c.execute("DELETE FROM contacts WHERE type=? AND address=?", (self.type, self.address))
     
     def toDict(self):
@@ -102,7 +102,7 @@ class ContactsManager(object):
 
     def __init__(self):
         self.contacts = []
-        cur = getCore().db.cursor()
+        cur = Core.instance().db.cursor()
         cur.execute("SELECT * FROM contacts")
         for row in cur:
             c = Contact.fromDict(row)

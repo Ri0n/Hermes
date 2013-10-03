@@ -14,7 +14,7 @@ from twisted.python import log
 import messenger
 from rcore import config, scheduler
 from hermes.contacts import Contact, AT_XMPP
-from rcore.globals import getCore
+from rcore.core import Core
 
 MessageWithBody = xpath.internQuery("/message/body")
 MessageWithError = xpath.internQuery("/message/error")
@@ -205,10 +205,10 @@ S - подписка
         elif text[:2].strip(" ") == "S": # subscription
             new = text[2:].strip(" \n")
             if new:
-                c = getCore().contacts.subscribe(AT_XMPP, j.userhost(), new)
+                c = Core.instance().contacts.subscribe(AT_XMPP, j.userhost(), new)
                 answer = "The Greate Hermes remembered you: " + str(c)
             else:
-                c = getCore().contacts.getByAddress(AT_XMPP, j.userhost())
+                c = Core.instance().contacts.getByAddress(AT_XMPP, j.userhost())
                 answer = "The Great Hermes knows you as: " + str(c) if c else \
                     "The Great Hermes really tried to find you in ancient scrolls but unsuccessfully"
                 answer += """\n\nTo change your subscribtion try to write something after letter S
@@ -222,7 +222,7 @@ Examples:
 
 Next services are available:
 """
-                for k, v in getCore().servicesDict().iteritems():
+                for k, v in Core.instance().servicesDict().iteritems():
                     answer += "%s - %s\n" % (k, v)
         else:
             if datetime.datetime.today() - self.lastSendTime < datetime.timedelta(seconds=5):

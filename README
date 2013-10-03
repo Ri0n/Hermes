@@ -11,8 +11,8 @@
    Use distutils or emerge hermes on gentoo
 
 4. Configuration
-   Look data/hermes.xml. this file will be installed as defualt.
-   default location /etc/hermes.xml may be overriden by hermes_CONFIG
+   Look data/hermes.conf. this file will be installed as defualt.
+   default location /etc/hermes.conf may be overriden by hermes_CONFIG
    enronment variable
 
 5. Starting
