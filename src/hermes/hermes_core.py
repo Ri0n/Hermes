@@ -19,7 +19,7 @@ class HermesCore(Core):
         self.tagParser = TagParser()
         
         # preparing database
-        self.db = sqlite3.connect(os.path.join(config().spool.path,config().spool.db))
+        self.db = sqlite3.connect(os.path.join(config()['spool']['path'], config()['spool']['db']))
         self.db.isolation_level = None
         self.db.row_factory = sqlite3.Row
 
@@ -40,7 +40,7 @@ class HermesCore(Core):
         super(HermesCore, self).run()
 
     def auth(self, user, password):
-        logins = config().logins.login
+        logins = config()['logins']['login']
         authorized = filter(lambda l:l.user == user and l.password == password, logins)
         if len(authorized):
             self.senderName = " or ".join([i.name for i in authorized])
@@ -50,7 +50,7 @@ class HermesCore(Core):
     
     def servicesDict(self):
         ret = {}
-        logins = config().logins.login
+        logins = config()['logins']['login']
         for l in logins:
             ret[l.user] = l.name
         return ret

@@ -75,7 +75,7 @@ class XMPPClientConnector(SRVConnector):
 
         if not self.servers and not self.orderedServers:
             # no SRV record, fall back..
-            port = int(config().xmpp.port)
+            port = int(config()['xmpp']['port'])
 
         return host, port
 
@@ -86,13 +86,13 @@ class XmppMessenger(messenger.Messenger):
 
     def __init__(self):
         super(XmppMessenger, self).__init__()
-        self.me = jid.JID(config().xmpp.me)
+        self.me = jid.JID(config()['xmpp']['me'])
         self.xmlstream = False
         self.kaTimer = None
         self.kaResponseTimer = None
         self.lastSendTime = datetime.datetime.today() - datetime.timedelta(days=1)
 
-        f = client.XMPPClientFactory(self.me, config().xmpp.password)
+        f = client.XMPPClientFactory(self.me, config()['xmpp']['password'])
         f.addBootstrap(xmlstream.STREAM_CONNECTED_EVENT, self.connected)
         f.addBootstrap(xmlstream.STREAM_END_EVENT, self.disconnected)
         f.addBootstrap(xmlstream.STREAM_AUTHD_EVENT, self.authenticated)

@@ -11,21 +11,21 @@ from hermes import contacts
 
 
 def init():
-    if int(config().demon._get("ssl", 0)):
+    if int(config()['daemon'].get("ssl", 0)):
         reactor.listenSSL(
-            int(config().demon.port),
+            int(config()['daemon']['port']),
             HermesSite(),
             DefaultOpenSSLContextFactory(
-                config().ssl.private,
-                config().ssl.cert
+                config()['ssl']['private'],
+                config()['ssl']['cert']
             ),
-            interface=config().demon._get("if","127.0.0.1")
+            interface=config()['daemon'].get("if","127.0.0.1")
         )
     else:
         reactor.listenTCP(
-            int(config().demon.port),
+            int(config()['daemon']['port']),
             HermesSite(),
-            interface=config().demon._get("if","127.0.0.1")
+            interface=config()['daemon'].get("if","127.0.0.1")
         )
 
 class HermesSite(Site):
@@ -36,10 +36,9 @@ class HermesSite(Site):
 
 
 class HermesResource(XMLRPC):
-    """HERMES Request demon"""
+    """HERMES Request daemon"""
 
     def auth(self, user, passwd):
-        c = config().demon
         return Core.instance().auth(user, passwd)
 
     def xmlrpc_notify(self, message, tags=[]):

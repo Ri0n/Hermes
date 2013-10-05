@@ -114,8 +114,8 @@ class TagParser:
     def __init__(self,**kwargs):
         self.lexer = lex.lex(module=self, **kwargs)
         self.parser = yacc.yacc(module=self,
-                                outputdir=config().spool.path,
-                                debugfile=os.path.join(config().spool.path, "tag_parser_debug.log"))
+                                outputdir=config()['spool']['path'],
+                                debugfile=os.path.join(config()['spool']['path'], "tag_parser_debug.log"))
         
     
     def t_SERVICE(self, t):
