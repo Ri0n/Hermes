@@ -30,9 +30,9 @@ def init():
 
 class HermesSite(Site):
 
-    def __init__(self, logPath=None, timeout=60 * 60 * 12):
+    def __init__(self, *args, **kwargs):
         root = HermesResource(allowNone=True)
-        server.Site.__init__(self, root, logPath, timeout)
+        server.Site.__init__(self, root, *args, **kwargs)
 
 
 class HermesResource(XMLRPC):
