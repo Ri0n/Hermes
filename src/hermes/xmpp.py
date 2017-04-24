@@ -104,7 +104,7 @@ class XmppMessenger(messenger.Messenger):
         self.connector.connect()
 
     def reconnect(self):
-        print "call reconnect"
+        print ("call reconnect")
         self.resetKeepAlive()
         if self.xmlstream:
             self.xmlstream.sendFooter()
@@ -146,7 +146,7 @@ class XmppMessenger(messenger.Messenger):
 
 
     def connected(self, xs):
-        print 'Connected.'
+        print ('Connected.')
 
         self.xmlstream = xs
         self.xmlstream.addObserver(MessageWithBody, self.processMessageBody)
@@ -157,14 +157,14 @@ class XmppMessenger(messenger.Messenger):
 
 
     def disconnected(self, xs):
-        print 'Disconnected.'
+        print ('Disconnected.')
         self.resetKeepAlive()
         self.xmlstream = False
         #reactor.stop()
 
 
     def authenticated(self, xs):
-        print "Authenticated."
+        print ("Authenticated.")
 
         presence = domish.Element((None, 'presence'))
         xs.send(presence)
@@ -174,8 +174,8 @@ class XmppMessenger(messenger.Messenger):
 
 
     def init_failed(self, failure):
-        print "Initialization failed."
-        print failure
+        print ("Initialization failed.")
+        print (failure)
 
         self.xmlstream.sendFooter()
 
@@ -226,7 +226,7 @@ Next services are available:
                     answer += "%s - %s\n" % (k, v)
         else:
             if datetime.datetime.today() - self.lastSendTime < datetime.timedelta(seconds=5):
-                print "RATE LIMIT exceeded: ", message.toXml()
+                print ("RATE LIMIT exceeded: " + message.toXml())
                 return # don't send too often
             answer = "Hm I don't know what is \"%s\". " \
                      "I'm just stupid bot.." % text
@@ -242,7 +242,7 @@ Next services are available:
                 except Exception, e:
                     msg = ":-("
                     log.err()
-                print repr(msg)
+                print (repr(msg))
                 self.sendMessage([jid], msg)
             else:
                 self.sendMessage([jid], "ibash сломалсо :-(")
@@ -251,7 +251,7 @@ Next services are available:
 
     def sendMessage(self, addresses, text, html = ""):
         if not self.xmlstream:
-            print "XML Stream is not ready yet! Can't send: ", text
+            print ("XML Stream is not ready yet! Can't send: " + text)
             return
         message = domish.Element((None, 'message'))
         message["type"] = "chat"
@@ -264,7 +264,7 @@ Next services are available:
                 for e in elements:
                     body.addChild(e)
             except Exception, e:
-                print "Failed to add xhtml content:", str(e)
+                print ("Failed to add xhtml content:", str(e))
         
         for j in addresses:
             log.msg("sending message to " + j)

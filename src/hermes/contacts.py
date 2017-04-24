@@ -73,7 +73,7 @@ class Contact(object):
     
     def updateSubscription(self, subscriptionString):
         self.subscription.parse(subscriptionString)
-        print "Subscription updated: " + str(self)
+        print ("Subscription updated: " + str(self))
         self.save()
         
     def save(self):
@@ -106,7 +106,7 @@ class ContactsManager(object):
         cur.execute("SELECT * FROM contacts")
         for row in cur:
             c = Contact.fromDict(row)
-            print "Loaded contact:", str(c)
+            print ("Loaded contact:", str(c))
             self.contacts.append(c)
             
             
@@ -139,7 +139,7 @@ class ContactsManager(object):
             subscription = subsciptionString
         ))
         c.save()
-        print "A new contact added:", str(c)
+        print ("A new contact added:" + str(c))
         self.contacts.append(c)
         return c
     
@@ -148,6 +148,6 @@ class ContactsManager(object):
         if c:
             c.delete()
             del self.contacts[self.contacts.index(c)]
-            print "unsubscribed:", str(c)
+            print ("unsubscribed:" + str(c))
             return True
         return False

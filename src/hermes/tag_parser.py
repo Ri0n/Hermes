@@ -128,7 +128,7 @@ class TagParser:
     
     # Error handling rule
     def t_error(self, t):
-        print "Illegal character '%s'" % t.value[0]
+        print ("Illegal character '%s'" % t.value[0])
         t.lexer.skip(1)
         
     def p_list(self, p):
@@ -188,7 +188,7 @@ class TagParser:
         return self.services
 
     def parse(self, data):
-        print ",".join([str(s) for s in self.servicesFromString(data).values()]).strip(",")
+        print (",".join([str(s) for s in self.servicesFromString(data).values()]).strip(","))
 
 if __name__ == "__main__":
     tp = TagParser()
