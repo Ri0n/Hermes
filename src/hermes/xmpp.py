@@ -239,7 +239,7 @@ Next services are available:
                 try:
                     msg = re.sub("(<br */>)", "\n", m.group(1))
                     msg = unescape(msg)
-                except Exception, e:
+                except Exception as e:
                     msg = ":-("
                     log.err()
                 print (repr(msg))
@@ -263,7 +263,7 @@ Next services are available:
                 body = he.addElement(('http://www.w3.org/1999/xhtml', 'body'))
                 for e in elements:
                     body.addChild(e)
-            except Exception, e:
+            except Exception as e:
                 print ("Failed to add xhtml content:", str(e))
         
         for j in addresses:
